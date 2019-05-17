@@ -15,9 +15,9 @@ public class OrderCalculateService implements OrderCalculate {
 	}
 
 	private BigDecimal calculateOrderItems(OrderVO order) {
-		final Double orderLinesTotal = order.getOrderLines().entrySet().stream().map(i -> i)
+		final Double orderLinesTotal = order.getOrderItems().entrySet().stream().map(i -> i)
 				.collect(Collectors.summingDouble(i -> calculateOrderItem(i.getValue())));
-		return BigDecimal.valueOf(orderLinesTotal).setScale(2, RoundingMode.HALF_DOWN);
+		return BigDecimal.valueOf(orderLinesTotal).setScale(2, RoundingMode.HALF_UP);
 	}
 
 	private Double calculateOrderItem(ItemVO orderLine) {

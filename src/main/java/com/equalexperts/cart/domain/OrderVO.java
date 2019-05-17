@@ -8,7 +8,7 @@ public class OrderVO {
 	private long orderId;
 	private int userId;
 	private BigDecimal totalPrice;
-	private Map<String,ItemVO> orderLines;
+	private Map<String,ItemVO> orderItems;
 
 	public OrderVO(int userId) {
 		this.userId = userId;
@@ -31,12 +31,12 @@ public class OrderVO {
 		this.totalPrice = totalPrice;
 	}
 
-	public Map<String, ItemVO> getOrderLines() {
-		return orderLines;
+	public Map<String, ItemVO> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setOrderLines(Map<String, ItemVO> orderLines) {
-		this.orderLines = orderLines;
+	public void setOrderItems(Map<String, ItemVO> orderItems) {
+		this.orderItems = orderItems;
 	}
 
 

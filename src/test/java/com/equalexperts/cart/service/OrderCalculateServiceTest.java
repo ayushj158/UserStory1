@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import com.equalexperts.cart.domain.ItemVO;
 import com.equalexperts.cart.domain.OrderVO;
 
-public class ShoppingCartServiceTest {
+public class OrderCalculateServiceTest {
 
 	@Nested
 	@DisplayName("Given_Empty Shopping Cart")
@@ -34,7 +34,7 @@ public class ShoppingCartServiceTest {
 		public void test_calculateOrder() {
 			OrderVO mockOrder = OrderTestData.createMockOrder(1, 5, 39.99);
 			OrderVO result = calculateOrder.calculateOrder(mockOrder);
-			assertEquals(new BigDecimal(199.95).setScale(2, RoundingMode.HALF_DOWN),result.getTotalPrice());
+			assertEquals(new BigDecimal(199.95).setScale(2, RoundingMode.HALF_UP),result.getTotalPrice());
 		}
 		
 
@@ -43,7 +43,7 @@ public class ShoppingCartServiceTest {
 		public void test_calculateOrder_rounddown() {
 			OrderVO mockOrder = OrderTestData.createMockOrder(1, 4, 39.988);
 			OrderVO result = calculateOrder.calculateOrder(mockOrder);
-			assertEquals(new BigDecimal(159.95).setScale(2, RoundingMode.HALF_DOWN),result.getTotalPrice());
+			assertEquals(new BigDecimal(159.95).setScale(2, RoundingMode.HALF_UP),result.getTotalPrice());
 		}
 		
 		
@@ -52,16 +52,25 @@ public class ShoppingCartServiceTest {
 		public void test_calculateOrder_round_up() {
 			OrderVO mockOrder = OrderTestData.createMockOrder(1, 4, 39.989);
 			OrderVO result = calculateOrder.calculateOrder(mockOrder);
-			assertEquals(new BigDecimal(159.96).setScale(2, RoundingMode.HALF_DOWN),result.getTotalPrice());
+			assertEquals(new BigDecimal(159.96).setScale(2, RoundingMode.HALF_UP),result.getTotalPrice());
+		}
+		
+		@Test
+		@DisplayName("When_Order contains 5 items each with price 39.987"
+				+ "_Then_Shopping cart should have total price of 199.94 with 199.935 midway decimal rounded up")
+		public void test_calculateOrder_roundup_midway() {
+			OrderVO mockOrder = OrderTestData.createMockOrder(1, 5, 39.987);
+			OrderVO result = calculateOrder.calculateOrder(mockOrder);
+			assertEquals(new BigDecimal(199.94).setScale(2, RoundingMode.HALF_UP),result.getTotalPrice());
 		}
 		
 		@Test
 		@DisplayName("Then_Shopping cart should have total price 0")
 		public void test_calculateOrder_EmptyCart() {
 			OrderVO mockOrder = new OrderVO(1234);
-			mockOrder.setOrderLines(new HashMap<String,ItemVO>());
+			mockOrder.setOrderItems(new HashMap<String,ItemVO>());
 			OrderVO result = calculateOrder.calculateOrder(mockOrder);
-			assertEquals(new BigDecimal(0.00).setScale(2, RoundingMode.HALF_DOWN),result.getTotalPrice());
+			assertEquals(new BigDecimal(0.00).setScale(2, RoundingMode.HALF_UP),result.getTotalPrice());
 		}
 	}
 }

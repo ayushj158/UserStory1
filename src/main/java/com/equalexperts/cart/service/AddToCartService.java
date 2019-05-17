@@ -1,29 +1,19 @@
 package com.equalexperts.cart.service;
 
-import java.util.HashMap;
-
 import com.equalexperts.cart.domain.ItemVO;
 import com.equalexperts.cart.domain.OrderVO;
 
-public class AddToCartService extends OrderCalculateService implements ShoppingCart {
+public class AddToCartService implements ModifyCart {
 	
 	private OrderVO order;
-	
-	public AddToCartService(int userId) {
-		if (null == this.order) {
-			this.order=initializeCart(userId);
-		}
-	}
-	
-	public OrderVO initializeCart(int userId) {
-		this.order = new OrderVO(userId);
-		this.order.setOrderLines(new HashMap<String,ItemVO>());
-		return this.order;
+
+	public AddToCartService(OrderVO order) {
+		this.order = order;
 	}
 
-	public void addItem(final String upc, final Double price, final int quantity) {
+	public void add(final String upc, final Double price, final int quantity) {
 		validateRequest(upc,price, quantity);
-		this.order.getOrderLines().put(upc, createLineItem(upc, price, quantity));
+		this.order.getOrderItems().put(upc, createLineItem(upc, price, quantity));
 	}
 
 	private void validateRequest(final String upc,final Double price, final int quantity) {

@@ -17,11 +17,11 @@ public class EndToEndTest {
 	@Nested
 	@DisplayName("Given An empty Shopping Cart And a product, Dove Soap with a unit price of 39.99")
 	class AddItemTest {
-		AddToCartService cart;
+		ShoppingCartService cart;
 
 		@BeforeEach
 		public void setup() {
-			cart = new AddToCartService(1234);
+			cart = new ShoppingCartService(1234);
 		}
 
 		@Test
@@ -32,11 +32,11 @@ public class EndToEndTest {
 			final String productUPC = "Dove Soaps";
 			final Double unitPrice = 39.99;
 			final int  quantity= 5;
-			cart.addItem(productUPC, unitPrice, quantity);
-			OrderVO result = cart.calculateOrder(cart.getOrder());
-			assertEquals(1, cart.getOrder().getOrderLines().size());
-			assertEquals(quantity, cart.getOrder().getOrderLines().get(productUPC).getQuantity());
-			assertEquals(unitPrice, cart.getOrder().getOrderLines().get(productUPC).getUnitPrice(),0.001);
+			cart.add(productUPC, unitPrice, quantity);
+			OrderVO result = cart.calculateOrder();
+			assertEquals(1, cart.getOrder().getOrderItems().size());
+			assertEquals(quantity, cart.getOrder().getOrderItems().get(productUPC).getQuantity());
+			assertEquals(unitPrice, cart.getOrder().getOrderItems().get(productUPC).getUnitPrice(),0.001);
 			assertEquals(new BigDecimal(199.95).setScale(2, RoundingMode.HALF_DOWN),result.getTotalPrice());
 		}
 	}
