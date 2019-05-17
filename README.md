@@ -22,7 +22,7 @@ What softwares you need to run this.
 ```
 Execute : sh build-and-run-test.sh 
 ```
-This will build your project and run all unit test cases
+This will build your project and run all test cases
 ### Unit Tests 
 
   Unit Tests are available for every business logic in the porject. 
